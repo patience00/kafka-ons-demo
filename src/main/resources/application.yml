@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASS}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-servers: ${MQ_SENSOR_SERVERS}
+    consumer:
+      group-id: ${MQ_SENSOR_GROUPID}
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      auto-commit-interval: 1000
+      enable-auto-commit: false
+    template:
+      default-topic: ${MQ_SENSOR_TOPIC}
+    listener:
+      concurrency: 10
+
+logging:
+  file: ${PATH_DATA}/demo.log
+  level: info
+server:
+  port: 8081
